@@ -2,10 +2,6 @@
 
 AI Website Builder is a full-stack SaaS-style application that transforms natural language prompts into interactive website prototypes. It gives users a complete creation flow: generate a project with AI, refine it through follow-up prompts, preview the result live, save manual edits, export the HTML, and publish selected projects to a public showcase.
 
-## Demo Tagline
-
-Turn a simple prompt into a polished, interactive website you can refine, preview, export, and publish.
-
 ## Overview
 
 This project was built as a modern AI product experience rather than a basic prompt box. The platform combines AI-driven code generation with project management, authentication, version tracking, and a public publishing workflow. The result is a practical foundation for an AI-powered website builder or creative prototyping platform.
