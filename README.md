@@ -20,13 +20,9 @@ This project was built as a modern AI product experience rather than a basic pro
 
 ## Screenshots
 
-Add your screenshots here before publishing the repository publicly.
-
-```md
 ![Home Page](./screenshots/HomePaage.png)
 ![Project Editor](./screenshots/Editor%20Panel.png)
 ![Projects Dashboard](./screenshots/MyProjects.png)
-```
 
 Recommended captures:
 
