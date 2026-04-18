@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { appPlans } from "../assets/assets";
 import Footer from "../components/Footer";
+import { toast } from "sonner";
 
 interface Plan {
   id: string;
@@ -10,13 +11,15 @@ interface Plan {
   description: string;
   features: string[];
 }
-const handlePurchase = async (planId: string) => {};
+const handlePurchase = async (planId: string) => {
+  toast.info('Payment integration coming soon! Plan: ' + planId)
+};
 
 const Pricing = () => {
   const [plans] = useState<Plan[]>(appPlans);
   return (
     <>
-      <div className="w-full max-w-5cl mx-auto z-20 max-md:px-4 min-h-[80vh]">
+      <div className="w-full max-w-5xl mx-auto z-20 max-md:px-4 min-h-[80vh]">
         <div className="text-center mt-16">
           <h2 className="text-gray-100 text-3xl font-medium">
             Choose Your Plan

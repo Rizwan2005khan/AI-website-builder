@@ -1,4 +1,4 @@
-import { X } from "lucide-react"
+import { X, Type, Layout, Palette, Settings2, Hash } from "lucide-react"
 import { useEffect, useState } from "react"
 
 interface EditorPanelProps {
@@ -33,11 +33,9 @@ const EditorPanel = ({
 
   const handleChange = (field: string, value: any) => {
     const newValues = { ...values, [field]: value }
-
     if (field in values.styles) {
       newValues.styles = { ...values.styles, [field]: value }
     }
-
     setValues(newValues)
     onUpdate({ [field]: value })
   }
@@ -49,133 +47,117 @@ const EditorPanel = ({
   }
 
   return (
-    <div className="absolute top-4 right-4 w-80 bg-white rounded-lg shadow-xl border border-gray-200 p-4 z-50 animate-fade-in fade-in">
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="font-semibold text-gray-800">Edit Element</h3>
-        <button onClick={onClose} className="p-1 hover:bg-gray-100 rounded-full">
-          <X className="w-4 h-4 text-gray-500" />
+    <div className="absolute top-4 right-4 w-80 glass-darker rounded-3xl shadow-2xl border-white/10 p-5 z-50 animate-fade-in">
+      <div className="flex justify-between items-center mb-6">
+        <div className="flex items-center gap-2">
+            <Settings2 className="w-4 h-4 text-primary" />
+            <h3 className="font-bold text-sm uppercase tracking-widest text-foreground">Inspector</h3>
+        </div>
+        <button onClick={onClose} className="p-1.5 hover:bg-white/5 rounded-xl transition-colors">
+          <X className="w-4 h-4 text-muted-foreground" />
         </button>
       </div>
 
-      <div className="space-y-4 text-black">
-        <div>
-          <label className="block text-xs font-medium text-gray-500 mb-1">
-            Text Content
+      <div className="space-y-6">
+        {/* Content Section */}
+        <div className="space-y-3">
+          <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">
+            <Type className="w-3 h-3" /> Text Content
           </label>
           <textarea
             value={values.text}
             onChange={(e) => handleChange("text", e.target.value)}
-            className="w-full text-sm p-2 border border-gray-400 rounded-md focus:ring-2 focus:ring-indigo-500 outline-none min-h-20"
+            className="w-full text-sm p-3 bg-white/5 border border-white/5 rounded-2xl focus:border-primary/50 outline-none min-h-[80px] transition-colors"
           />
         </div>
 
-        <div>
-          <label className="block text-xs font-medium text-gray-500 mb-1">
-            Class Name
+        {/* Classes Section */}
+        <div className="space-y-3">
+          <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">
+            <Hash className="w-3 h-3" /> Tailwind Classes
           </label>
           <input
             type="text"
             value={values.className || ""}
             onChange={(e) => handleChange("className", e.target.value)}
-            className="w-full text-sm p-2 border border-gray-400 rounded-md focus:ring-2 focus:ring-indigo-500 outline-none"
+            className="w-full text-sm p-3 bg-white/5 border border-white/5 rounded-2xl focus:border-primary/50 outline-none transition-colors"
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label className="block text-xs font-medium text-gray-500 mb-1">
-              Padding
-            </label>
-            <input
-              type="text"
-              value={values.styles.padding}
-              onChange={(e) =>
-                handleStyleChange("padding", e.target.value)
-              }
-              className="w-full text-sm p-2 border border-gray-400 rounded-md focus:ring-2 focus:ring-indigo-500 outline-none"
+        {/* Layout Section */}
+        <div className="space-y-3">
+           <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">
+            <Layout className="w-3 h-3" /> Spacing & Size
+          </label>
+            <div className="grid grid-cols-2 gap-3">
+                <InputGroup 
+                    label="Padding" 
+                    value={values.styles.padding} 
+                    onChange={(v) => handleStyleChange("padding", v)} 
+                />
+                <InputGroup 
+                    label="Margin" 
+                    value={values.styles.margin} 
+                    onChange={(v) => handleStyleChange("margin", v)} 
+                />
+            </div>
+            <InputGroup 
+                label="Font Size" 
+                value={values.styles.fontSize} 
+                onChange={(v) => handleStyleChange("fontSize", v)} 
             />
-          </div>
-
-          <div>
-            <label className="block text-xs font-medium text-gray-500 mb-1">
-              Margin
-            </label>
-            <input
-              type="text"
-              value={values.styles.margin}
-              onChange={(e) =>
-                handleStyleChange("margin", e.target.value)
-              }
-              className="w-full text-sm p-2 border border-gray-400 rounded-md focus:ring-2 focus:ring-indigo-500 outline-none"
-            />
-          </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label className="block text-xs font-medium text-gray-500 mb-1">
-              Font Size
+        {/* Appearance Section */}
+        <div className="space-y-3">
+            <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">
+                <Palette className="w-3 h-3" /> Colors
             </label>
-            <input
-              type="text"
-              value={values.styles.fontSize}
-              onChange={(e) =>
-                handleStyleChange("fontSize", e.target.value)
-              }
-              className="w-full text-sm p-2 border border-gray-400 rounded-md focus:ring-2 focus:ring-indigo-500 outline-none"
-            />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label className="block text-xs font-medium text-gray-500 mb-1">
-              Background
-            </label>
-            <div className="flex items-center gap-2 border border-gray-400 rounded-md p-1">
-              <input
-                type="color"
-                value={
-                  values.styles.backgroundColor === "rgba(0,0,0,0)"
-                    ? "#ffffff"
-                    : values.styles.backgroundColor
-                }
-                onChange={(e) =>
-                  handleStyleChange(
-                    "backgroundColor",
-                    e.target.value
-                  )
-                }
-                className="w-6 h-6 cursor-pointer"
-              />
-              <span className="text-xs text-gray-600 truncate">
-                {values.styles.backgroundColor}
-              </span>
+            <div className="grid grid-cols-2 gap-3">
+                <ColorGroup 
+                    label="Background" 
+                    value={values.styles.backgroundColor === "rgba(0,0,0,0)" ? "#ffffff" : values.styles.backgroundColor} 
+                    onChange={(v) => handleStyleChange("backgroundColor", v)} 
+                />
+                <ColorGroup 
+                    label="Text Color" 
+                    value={values.styles.color} 
+                    onChange={(v) => handleStyleChange("color", v)} 
+                />
             </div>
-          </div>
-
-          <div>
-            <label className="block text-xs font-medium text-gray-500 mb-1">
-              Text Color
-            </label>
-            <div className="flex items-center gap-2 border border-gray-400 rounded-md p-1">
-              <input
-                type="color"
-                value={values.styles.color}
-                onChange={(e) =>
-                  handleStyleChange("color", e.target.value)
-                }
-                className="w-6 h-6 cursor-pointer"
-              />
-              <span className="text-xs text-gray-600 truncate">
-                {values.styles.color}
-              </span>
-            </div>
-          </div>
         </div>
       </div>
     </div>
   )
 }
+
+const InputGroup = ({ label, value, onChange }: { label: string, value: string, onChange: (v: string) => void }) => (
+    <div className="space-y-1.5">
+        <span className="text-[10px] text-muted-foreground/50 font-medium">{label}</span>
+        <input
+            type="text"
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            className="w-full text-xs p-2.5 bg-white/5 border border-white/5 rounded-xl focus:border-primary/50 outline-none transition-colors"
+        />
+    </div>
+)
+
+const ColorGroup = ({ label, value, onChange }: { label: string, value: string, onChange: (v: string) => void }) => (
+    <div className="space-y-1.5">
+        <span className="text-[10px] text-muted-foreground/50 font-medium">{label}</span>
+        <div className="flex items-center gap-2 bg-white/5 border border-white/5 rounded-xl p-1.5 group-focus-within:border-primary/50 transition-colors">
+            <input
+                type="color"
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+                className="w-5 h-5 bg-transparent border-none cursor-pointer rounded-lg overflow-hidden"
+            />
+            <span className="text-[10px] text-muted-foreground truncate uppercase font-mono">
+                {value}
+            </span>
+        </div>
+    </div>
+)
 
 export default EditorPanel

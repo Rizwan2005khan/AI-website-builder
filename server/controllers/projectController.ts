@@ -1,6 +1,6 @@
 import {Request, Response} from 'express'
-import openai from "../configs/openai.js";
 import prisma from "../lib/prisma.js";
+import { createChatCompletion } from "../lib/ai.js";
 
 // controller function to make revision
 export const makeRevision = async (req: Request, res: Response) => {
@@ -45,13 +45,11 @@ export const makeRevision = async (req: Request, res: Response) => {
 
         await prisma.user.update({
             where: {id: userId},
-            data: {credits: {decrement: 5}}
+            data: {credits: {decrement: 1}}
         })
 
         // Enhance user prompt
-        const promptEnhanceResponse = await openai.chat.completions.create({
-            model: 'kwaipilot/kat-coder-pro:free',
-            messages: [
+        const promptEnhanceResponse = await createChatCompletion([
                 {
                     role: 'system',
                     content: `
@@ -70,8 +68,7 @@ export const makeRevision = async (req: Request, res: Response) => {
                     role: 'user',
                     content: `User's request: "${message}" `
                 }
-            ]
-        })
+            ])
 
         const enhancedPrompt = promptEnhanceResponse.choices[0].message.content;
 
@@ -84,9 +81,7 @@ export const makeRevision = async (req: Request, res: Response) => {
         })
 
         // generate website code
-        const codeGenerationResponse = await openai.chat.completions.create({
-            model: 'kwaipilot/kat-coder-pro:free',
-            messages: [
+        const codeGenerationResponse = await createChatCompletion([
                 {
                     role: 'system',
                     content: `
@@ -109,8 +104,7 @@ export const makeRevision = async (req: Request, res: Response) => {
                     Here is the current website code: "${currentProject.current_code}" The user wants this changes: "${enhancedPrompt}"
                     `
                 }
-            ]
-        })
+            ])
 
         const code = codeGenerationResponse.choices[0].message.content || "";
 
@@ -124,7 +118,7 @@ export const makeRevision = async (req: Request, res: Response) => {
             })
             await prisma.user.update({
                 where: {id: userId},
-                data: {credits: {increment: 5}}
+                data: {credits: {increment: 1}}
             })
             return;
         }
@@ -161,10 +155,14 @@ export const makeRevision = async (req: Request, res: Response) => {
     } catch (error: any) {
         await prisma.user.update({
             where: {id: userId},
-            data: {credits: {increment: 5}}
+            data: {credits: {increment: 1}}
         })
-        console.log(error.code || error.message)
-        res.status(500).json({message: error.message})
+        console.error(
+            '[makeRevision] failed:',
+            error?.status || error?.code || error?.message,
+            error?.error?.message || ''
+        )
+        res.status(500).json({message: error?.message || 'Failed to revise project'})
     }
 }
 
