@@ -1,44 +1,81 @@
 # AI Website Builder
 
-AI Website Builder is a full-stack application that turns natural language prompts into interactive website prototypes. Users can generate projects with AI, iterate on them through revision prompts, preview the result live, save custom edits, export the generated HTML, and publish selected projects to a public community showcase.
+AI Website Builder is a full-stack SaaS-style application that transforms natural language prompts into interactive website prototypes. It gives users a complete creation flow: generate a project with AI, refine it through follow-up prompts, preview the result live, save manual edits, export the HTML, and publish selected projects to a public showcase.
 
-## Highlights
+## Demo Tagline
 
-- Prompt-to-website generation powered by OpenAI-compatible APIs
-- AI-assisted revisions with conversation history per project
-- Version tracking with rollback support
-- Live project preview and responsive device modes
-- Manual code saving and HTML export
-- Publish and unpublish controls for community sharing
-- Authentication with Better Auth
-- Credit-based usage model with plan UI
+Turn a simple prompt into a polished, interactive website you can refine, preview, export, and publish.
+
+## Overview
+
+This project was built as a modern AI product experience rather than a basic prompt box. The platform combines AI-driven code generation with project management, authentication, version tracking, and a public publishing workflow. The result is a practical foundation for an AI-powered website builder or creative prototyping platform.
+
+## Key Features
+
+- AI website generation from natural language prompts
+- AI-assisted revisions for updating an existing project
+- Version history with rollback support
+- Live preview inside a dedicated editor experience
+- Manual code saving for custom edits
+- HTML export for generated projects
+- Publish and unpublish controls for community visibility
+- Authentication and session management with Better Auth
+- Credit-based product model with pricing UI
+
+## Screenshots
+
+Add your screenshots here before publishing the repository publicly.
+
+```md
+![Home Page](./screenshots/HomePaage.png)
+![Project Editor](./screenshots/Editor%20Panel.png)
+![Projects Dashboard](./screenshots/MyProjects.png)
+```
+
+Recommended captures:
+
+- Landing page hero and prompt input
+- Editor view with sidebar and live preview
+- My Projects dashboard
+- Published community showcase
 
 ## Tech Stack
 
 - Frontend: React, TypeScript, Vite, Tailwind CSS, React Router
 - Backend: Node.js, Express, TypeScript
 - Database: PostgreSQL with Prisma
-- Auth: Better Auth
-- AI: OpenAI SDK with OpenRouter-compatible configuration
+- Authentication: Better Auth
+- AI Integration: OpenAI SDK with OpenRouter-compatible configuration
 
-## Core Workflow
+## Product Flow
 
-1. A signed-in user submits a project prompt.
-2. The backend creates a project record and starts AI generation.
-3. The generated HTML is stored as the current project version.
-4. Users open the editor to preview, revise, save, export, publish, or roll back their project.
+1. A signed-in user enters a prompt describing the website they want.
+2. The backend creates a project record and starts AI generation asynchronously.
+3. The generated HTML is saved as the current project version.
+4. The user opens the editor to preview, revise, save, export, publish, or roll back the project.
 
-## Project Structure
+## Architecture
 
 ```text
 .
 |-- client/   # React + Vite frontend
-|-- server/   # Express + Prisma backend
+|-- server/   # Express API, auth, Prisma, AI generation
 ```
+
+### Frontend
+
+- Handles authentication flows, landing page UX, project dashboard, editor, preview pages, pricing, settings, and community browsing
+- Uses Axios for API requests and Better Auth client utilities for session handling
+
+### Backend
+
+- Exposes authenticated routes for project creation, revision, publishing, saving, versioning, and personal project management
+- Uses Prisma with PostgreSQL for persistence
+- Calls an OpenAI-compatible API to enhance prompts and generate project code
 
 ## Environment Variables
 
-Create a `server/.env` file with values for:
+Create `server/.env`:
 
 ```env
 DATABASE_URL=
@@ -49,13 +86,13 @@ TRUSTED_ORIGINS=http://localhost:5173,http://localhost:3000
 NODE_ENV=development
 ```
 
-Create a `client/.env` file with:
+Create `client/.env`:
 
 ```env
 VITE_BASEURL=http://localhost:3000
 ```
 
-## Local Setup
+## Local Development
 
 ### 1. Install dependencies
 
@@ -69,7 +106,7 @@ cd server
 npm install
 ```
 
-### 2. Run database migrations
+### 2. Run Prisma migrations
 
 ```bash
 cd server
@@ -90,44 +127,72 @@ cd client
 npm run dev
 ```
 
-Frontend: `http://localhost:5173`  
-Backend: `http://localhost:3000`
+Local URLs:
 
-## Available Scripts
+- Frontend: `http://localhost:5173`
+- Backend: `http://localhost:3000`
+
+## Scripts
 
 ### Client
 
-- `npm run dev` starts the Vite dev server
-- `npm run build` builds the production frontend
+- `npm run dev` starts the Vite development server
+- `npm run build` builds the frontend for production
 - `npm run preview` previews the production frontend locally
 
 ### Server
 
-- `npm run start` starts the server with `tsx`
-- `npm run server` starts the server with `nodemon`
-- `npm run build` compiles the TypeScript backend
+- `npm run start` runs the server with `tsx`
+- `npm run server` runs the server with `nodemon`
+- `npm run build` compiles the backend TypeScript project
 
-## Current Features
+## Deployment
 
-- User sign up, sign in, and session-based authentication
-- AI generation of single-file website prototypes
-- Revision prompts that update existing projects
-- Version history storage and rollback
-- Project dashboard for managing created work
-- Public project publishing and viewing
+This project is split into a separate frontend and backend, so the easiest production setup is:
+
+- Deploy `client` to Vercel or Netlify
+- Deploy `server` to Render, Railway, or another Node-compatible host
+- Use a hosted PostgreSQL database
+- Set matching frontend and backend environment variables, especially `TRUSTED_ORIGINS`, `BETTER_AUTH_URL`, and `VITE_BASEURL`
+
+### Deployment Checklist
+
+- Set a production `DATABASE_URL`
+- Set `AI_API_KEY`
+- Set `BETTER_AUTH_SECRET`
+- Set `BETTER_AUTH_URL` to your backend auth base URL
+- Set `TRUSTED_ORIGINS` to include your production frontend domain
+- Set `VITE_BASEURL` in the frontend to your deployed backend URL
+- Run Prisma migrations against the production database
+
+## Current Status
+
+Implemented today:
+
+- User authentication
+- Project generation and revision flow
+- Version persistence and rollback
+- Project dashboard and preview flow
+- Project publishing and community browsing
 - Credit tracking in the data model
 
-## In Progress / Planned
+Still in progress:
 
 - Payment integration for purchasing credits
-- Expanded project settings and account management
-- More advanced publishing and collaboration features
+- More advanced account and project settings
+- Expanded collaboration or team features
 
 ## Notes
 
-- Generated projects are currently saved as standalone HTML documents.
-- The pricing interface is present, but payment processing is not implemented yet.
-- AI generation depends on a valid compatible API key and database configuration.
+- Generated projects are currently stored as standalone HTML documents.
+- The pricing page is present, but payment processing is not implemented yet.
+- AI generation depends on valid API credentials and a working PostgreSQL database.
+
+## Why This Project Stands Out
+
+- It combines product design, backend architecture, database modeling, authentication, and AI integration in one app
+- It goes beyond generation by including revision history, previews, exports, and publishing
+- It is a strong portfolio project for showcasing full-stack and AI product engineering skills
 
 ## License
 
