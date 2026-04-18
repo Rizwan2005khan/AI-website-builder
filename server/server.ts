@@ -27,6 +27,10 @@ app.get('/', (req: Request, res: Response) => {
 app.use('/api/user', userRouter)
 app.use('/api/project', projectRouter)
 
-app.listen(port, () => {
-    console.log(`Server is running at http://localhost:${port}`);
-});
+if (process.env.VERCEL !== '1') {
+    app.listen(port, () => {
+        console.log(`Server is running at http://localhost:${port}`);
+    });
+}
+
+export default app;

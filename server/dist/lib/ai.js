@@ -1,9 +1,9 @@
 import openai from "../configs/openai.js";
 const fallbackModels = [
-    "google/gemini-2.0-flash-exp:free",
-    "google/gemini-2.5-flash-preview",
-    "meta-llama/llama-3.3-70b-instruct:free",
-    "openai/gpt-4o-mini",
+    "openrouter/auto",
+    "google/gemini-2.0-flash-lite-preview-02-05:free",
+    "meta-llama/llama-3.1-8b-instruct:free",
+    "mistralai/mistral-7b-instruct:free",
 ];
 const configuredModels = (process.env.AI_MODELS || process.env.AI_MODEL || "")
     .split(",")
@@ -16,6 +16,7 @@ const isRetryableModelError = (error) => {
     const message = String(error?.message || "").toLowerCase();
     return (status === 404 ||
         status === 400 ||
+        status === 429 ||
         code === "model_not_found" ||
         message.includes("model") && (message.includes("not found") || message.includes("unavailable")));
 };
